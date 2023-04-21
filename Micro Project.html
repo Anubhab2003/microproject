@@ -1,0 +1,72 @@
+<form id="enrollment-form">
+  <label for="roll-no">Roll No:</label>
+  <input type="number" id="roll-no" name="roll-no" required>
+
+  <label for="full-name">Full Name:</label>
+  <input type="text" id="full-name" name="full-name" required>
+
+  <label for="class">Class:</label>
+  <input type="text" id="class" name="class" required>
+
+  <label for="birth-date">Birth Date:</label>
+  <input type="date" id="birth-date" name="birth-date" required>
+
+  <label for="address">Address:</label>
+  <input type="text" id="address" name="address" required>
+
+  <label for="enrollment-date">Enrollment Date:</label>
+  <input type="date" id="enrollment-date" name="enrollment-date" required>
+
+  <button type="button" id="save-button" disabled>Save</button>
+  <button type="button" id="update-button" disabled>Update</button>
+  <button type="button" id="reset-button" disabled>Reset</button>
+
+  <script>
+    // Set the cursor to the Roll No field on page load
+    document.getElementById('roll-no').focus();
+
+    // When the user enters data in the Roll No field, check if it exists in the database
+    document.getElementById('roll-no').addEventListener('input', function() {
+      var rollNo = this.value;
+      if (rollNo) {
+        // Check if the Roll No exists in the database
+        $.get('/check-roll-no/' + rollNo, function(data) {
+          if (data.exists) {
+            // The Roll No exists, so populate the form with the existing data
+            document.getElementById('full-name').value = data.fullName;
+            document.getElementById('class').value = data.class;
+            document.getElementById('birth-date').value = data.birthDate;
+            document.getElementById('address').value = data.address;
+            document.getElementById('enrollment-date').value = data.enrollmentDate;
+
+            // Enable the Update and Reset buttons, and disable the Save button
+            document.getElementById('update-button').disabled = false;
+            document.getElementById('reset-button').disabled = false;
+            document.getElementById('save-button').disabled = true;
+          } else {
+            // The Roll No doesn't exist, so enable the Save and Reset buttons, and disable the Update button
+            document.getElementById('save-button').disabled = false;
+            document.getElementById('reset-button').disabled = false;
+            document.getElementById('update-button').disabled = true;
+          }
+        });
+      }
+    });
+
+    // When the user clicks the Save button, save the data to the database
+    document.getElementById('save-button').addEventListener('click', function() {
+      // TODO: Save the data to the database
+
+      // Disable the Save button and enable the Update and Reset buttons
+      document.getElementById('save-button').disabled = true;
+      document.getElementById('update-button').disabled = false;
+      document.getElementById('reset-button').disabled = false;
+    });
+
+    // When the user clicks the Update button, update the data in the database
+    document.getElementById('update-button').addEventListener('click', function() {
+      // TODO: Update the data in the database
+
+      // Disable the Update button and enable the Reset button
+      document.getElementById('update-button').disabled = true;
+      document.getElementById('reset-button').
